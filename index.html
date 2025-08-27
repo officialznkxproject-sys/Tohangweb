@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOHANG STORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2a2d43;
+            --secondary: #5d74bb;
+            --accent: #00d4ff;
+            --light: #f8f9fa;
+            --dark: #1a1c2b;
+            --success: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .menu-btn {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .slider {
+            display: flex;
+            width: 500%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 20%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        var(--bg) center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .slide:nth-child(1) { --bg: url('https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); }
+        .slide:nth-child(2) { --bg: url('https://images.unsplash.com/photo-1616077168079-7e09a677fb2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); }
+        .slide:nth-child(3) { --bg: url('https://images.unsplash.com/photo-1611605698335-8b1569810432?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'); }
+        .slide:nth-child(4) { --bg: url('https://images.unsplash.com/photo-1620121478247-ec786b9be2e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); }
+        .slide:nth-child(5) { --bg: url('https://images.unsplash.com/photo-1598928631833-8cb5d6f6e6b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background-color: var(--accent);
+        }
+
+        /* Product Grid */
+        .products {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Chat & AI Button */
+        .chat-ai-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .ai-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .chat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        /* AI Chat Page */
+        #ai-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+        }
+
+        .ai-message {
+            background: #f0f2f5;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: var(--secondary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-input-container {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .ai-send {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            padding: 20px;
+            background: white;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .qris-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qris-code {
+            width: 200px;
+            height: 200px;
+            background: #f5f5f5;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            border: 1px dashed #ccc;
+        }
+
+        .bank-accounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .bank-account {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .bank-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .account-number {
+            margin: 8px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .slider-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">TOHANG STORE</div>
+        <button class="menu-btn"><i class="fas fa-bars"></i> Menu</button>
+    </header>
+
+    <!-- Slider -->
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <h2>Pulsa & Data</h2>
+                <p>All Operator - Terjangkau dan Cepat</p>
+            </div>
+            <div class="slide">
+                <h2>Token Listrik</h2>
+                <p>Token PLN & Tagihan Listrik</p>
+            </div>
+            <div class="slide">
+                <h2>E-Wallet</h2>
+                <p>Top Up All E-Wallet</p>
+            </div>
+            <div class="slide">
+                <h2>Voucher Game</h2>
+                <p>Item & Voucher All Games</p>
+            </div>
+            <div class="slide">
+                <h2>Pembayaran BPJS</h2>
+                <p>BPJS Kesehatan & Ketenagakerjaan</p>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products">
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-sim-card"></i></div>
+            <div class="product-title">Pulsa & Data</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-bolt"></i></div>
+            <div class="product-title">Token Listrik</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-tint"></i></div>
+            <div class="product-title">Tagihan Air</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-heartbeat"></i></div>
+            <div class="product-title">BPJS</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-wallet"></i></div>
+            <div class="product-title">E-Wallet</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="product-title">Asuransi</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+        <div class="product-card animated">
+            <div class="product-icon"><i class="fas fa-gamepad"></i></div>
+            <div class="product-title">Voucher Game</div>
+            <div class="product-price">ubah dong</div>
+        </div>
+    </div>
+
+    <!-- Payment Section -->
+    <div class="payment-section">
+        <h2 class="section-title">Metode Pembayaran</h2>
+        <p>Bayar dengan semua E-Wallet melalui QRIS berikut:</p>
+        
+        <div class="qris-container">
+            <div class="qris-code">
+                <span>QR Code akan muncul di sini</span>
+            </div>
+            <p>Scan QRIS di atas untuk pembayaran</p>
+        </div>
+        
+        <p>Atau transfer ke rekening berikut:</p>
+        
+        <div class="bank-accounts">
+            <div class="bank-account">
+                <div class="bank-name">Dana</div>
+                <div class="account-number">083168118001</div>
+            </div>
+            <div class="bank-account">
+                <div class="bank-name">SeaBank</div>
+                <div class="account-number">901332162623</div>
+            </div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 15px; font-style: italic;">
+            Scan atau transfer ke nomor/rekening ini
+        </p>
+    </div>
+
+    <!-- Chat & AI Container -->
+    <div class="chat-ai-container">
+        <div class="ai-icon" id="open-ai">
+            <i class="fas fa-robot"></i>
+        </div>
+        <button class="chat-btn">
+            <i class="fas fa-comment"></i> Customer Service
+        </button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-history"></i></div>
+            <span>Riwayat</span>
+        </a>
+        <a href="#" class="nav-item" id="donation-btn">
+            <div class="nav-icon"><i class="fas fa-donate"></i></div>
+            <span>Donasi</span>
+        </a>
+        <a href="https://wa.me/6287858294457" class="nav-item">
+            <div class="nav-icon"><i class="fab fa-whatsapp"></i></div>
+            <span>WhatsApp</span>
+        </a>
+    </nav>
+
+    <!-- AI Chat Page -->
+    <div id="ai-page">
+        <div class="ai-header">
+            <i class="fas fa-arrow-left" id="close-ai"></i>
+            <h2>T.AI. - Assistant</h2>
+        </div>
+        <div class="ai-chat-container" id="chat-messages">
+            <div class="message ai-message">
+                Halo! Saya T.AI., asisten virtual TOHANG STORE. Ada yang bisa saya bantu?
+            </div>
+        </div>
+        <div class="ai-input-container">
+            <input type="text" class="ai-input" placeholder="Ketik pesan Anda..." id="ai-input">
+            <button class="ai-send" id="ai-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const slider = document.querySelector('.slider');
+        
+        function showSlide(n) {
+            currentSlide = (n + slides.length) % slides.length;
+            slider.style.transform = `translateX(-${currentSlide * 20}%)`;
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        // Auto slide
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Dot click events
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // AI Chat functionality
+        const openAiBtn = document.getElementById('open-ai');
+        const closeAiBtn = document.getElementById('close-ai');
+        const aiPage = document.getElementById('ai-page');
+        const aiInput = document.getElementById('ai-input');
+        const aiSend = document.getElementById('ai-send');
+        const chatMessages = document.getElementById('chat-messages');
+        
+        openAiBtn.addEventListener('click', () => {
+            aiPage.style.display = 'flex';
+        });
+        
+        closeAiBtn.addEventListener('click', () => {
+            aiPage.style.display = 'none';
+        });
+        
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function getAIResponse(userMessage) {
+            userMessage = userMessage.toLowerCase();
+            
+            if (userMessage.includes('harga') || userMessage.includes('berapa')) {
+                return "Untuk informasi harga terbaru, silakan cek di menu produk atau hubungi customer service kami.";
+            } else if (userMessage.includes('pulsa') || userMessage.includes('data')) {
+                return "Kami menyediakan pulsa dan paket data semua operator. Silakan pilih produk yang diinginkan.";
+            } else if (userMessage.includes('listrik') || userMessage.includes('token')) {
+                return "Pembelian token listrik dan pembayaran tagihan listrik dapat dilakukan melalui menu produk kami.";
+            } else if (userMessage.includes('game') || userMessage.includes('voucher')) {
+                return "Kami menyediakan voucher dan item game untuk berbagai platform. Silakan pilih game yang diinginkan.";
+            } else if (userMessage.includes('wa') || userMessage.includes('whatsapp')) {
+                return "Anda dapat menghubungi kami via WhatsApp di 0
